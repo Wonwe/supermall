@@ -2,7 +2,7 @@
   <mt-swipe :auto="4000" class="home-swipe">
       <mt-swipe-item v-for="item in banners" :key="item.id">
         <a :href="item.link">
-          <img :src="item.image"/>
+          <img :src="item.image" @load="imageLoad" />
         </a>
       </mt-swipe-item>
     </mt-swipe>
@@ -18,7 +18,12 @@ export default {
        return []
      }
    }
- }
+ },
+ methods: {
+   imageLoad() {
+      this.$emit('swipeImageLoad')
+   }
+ },
 }
 </script>
 
