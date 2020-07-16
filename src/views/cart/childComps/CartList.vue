@@ -2,6 +2,10 @@
 <template>
   <div>
     <scroll ref="scroll" class="cart-list">
+      <div class="cart-empty" v-show="isEmpty">
+        <p>你的购物车是空的~</p>
+        <img src="~assets/img/cart/shibushisha.gif" alt="">
+      </div>
       <cart-list-item v-for="(item, index) in cartList" 
                       :key="index"
                       :item-info="item" />
@@ -30,7 +34,10 @@ export default {
     this.$refs.scroll.refresh()
   },
   computed: {
-    ...mapGetters(['cartList'])
+    ...mapGetters(['cartList']),
+    isEmpty() {
+      return this.cartList.length === 0 ? true : false 
+    }
   },
 }
 </script>
@@ -43,5 +50,12 @@ export default {
   top: 44px;
   bottom: 89px;
   overflow: hidden;
+}
+
+.cart-empty {
+  width: 200px;
+  height: 200px;
+  margin: 50px auto;
+  text-align: center;
 }
 </style>

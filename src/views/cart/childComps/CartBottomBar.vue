@@ -8,7 +8,7 @@
 
     <div>合计：{{totalPrice}}</div>
 
-    <div class="calculate" @click="calculate">去计算：{{checkedLength}}</div>
+    <div class="calculate" @click="calculate">去结算：{{checkedLength}}</div>
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
       }
     },
     calculate() {
-      this.$toast.show('请选择您要购买的商品！', 1500)
+      this.$toast.show('功能未完成！', 1000)
     }
   }
 }

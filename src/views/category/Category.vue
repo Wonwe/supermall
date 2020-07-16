@@ -1,140 +1,100 @@
 <!-- 分类页 -->
 <template>
-  <div>
-    <div class="wrapper">
-      <ul class="content">
-        <li>asd91</li>
-        <li>asd92</li>
-        <li>asd93</li>
-        <li>asd94</li>
-        <li>asd95</li>
-        <li>asd96</li>
-        <li>asd97</li>
-        <li>asd98</li>
-        <li>asd99</li>
-        <li>asd100</li>
-        <li>asd1</li>
-        <li>asd2</li>
-        <li>asd3</li>
-        <li>asd4</li>
-        <li>asd5</li>
-        <li>asd6</li>
-        <li>asd7</li>
-        <li>asd8</li>
-        <li>asd9</li>
-        <li>asd10</li>
-        <li>asd11</li>
-        <li>asd12</li>
-        <li>asd13</li>
-        <li>asd14</li>
-        <li>asd15</li>
-        <li>asd16</li>
-        <li>asd17</li>
-        <li>asd18</li>
-        <li>asd19</li>
-        <li>asd20</li>
-        <li>asd21</li>
-        <li>asd22</li>
-        <li>asd23</li>
-        <li>asd24</li>
-        <li>asd25</li>
-        <li>asd26</li>
-        <li>asd27</li>
-        <li>asd28</li>
-        <li>asd29</li>
-        <li>asd30</li>
-        <li>asd31</li>
-        <li>asd32</li>
-        <li>asd33</li>
-        <li>asd34</li>
-        <li>asd35</li>
-        <li>asd36</li>
-        <li>asd37</li>
-        <li>asd38</li>
-        <li>asd39</li>
-        <li>asd40</li>
-        <li>asd41</li>
-        <li>asd42</li>
-        <li>asd43</li>
-        <li>asd44</li>
-        <li>asd45</li>
-        <li>asd46</li>
-        <li>asd47</li>
-        <li>asd48</li>
-        <li>asd49</li>
-        <li>asd50</li>
-        <li>asd51</li>
-        <li>asd52</li>
-        <li>asd53</li>
-        <li>asd54</li>
-        <li>asd55</li>
-        <li>asd56</li>
-        <li>asd57</li>
-        <li>asd58</li>
-        <li>asd59</li>
-        <li>asd60</li>
-        <li>asd61</li>
-        <li>asd62</li>
-        <li>asd63</li>
-        <li>asd64</li>
-        <li>asd65</li>
-        <li>asd66</li>
-        <li>asd67</li>
-        <li>asd68</li>
-        <li>asd69</li>
-        <li>asd70</li>
-        <li>asd71</li>
-        <li>asd72</li>
-        <li>asd73</li>
-        <li>asd74</li>
-        <li>asd75</li>
-        <li>asd76</li>
-        <li>asd77</li>
-        <li>asd78</li>
-        <li>asd79</li>
-        <li>asd80</li>
-        <li>asd81</li>
-        <li>asd82</li>
-        <li>asd83</li>
-        <li>asd84</li>
-        <li>asd85</li>
-        <li>asd86</li>
-        <li>asd87</li>
-        <li>asd88</li>
-        <li>asd89</li>
-        <li>asd90</li>
-        <li>asd91</li>
-        <li>asd92</li>
-        <li>asd93</li>
-        <li>asd94</li>
-        <li>asd95</li>
-        <li>asd96</li>
-        <li>asd97</li>
-        <li>asd98</li>
-        <li>asd99</li>
-        <li>asd100</li>
-      </ul>
-    </div>
-    <back-top @click.native="backClick" v-show="isShowBackTop" />
+  <div id="category">
+    <nav-bar class="category-nav">
+      <div slot="center">商品分类</div>
+    </nav-bar>
+
+    <scroll class="left-scroll" :bounce="false">
+      <left-nav @navClick="navClick" :navList="navList" />
+    </scroll>
+    
+    <scroll class="right-scroll">
+      <goods-category :goodsCategory="goodsCategory" />
+    </scroll>
   </div>
 </template>
 
 <script>
-import BScroll from 'better-scroll'
+import NavBar from 'components/common/navbar/NavBar'
+import Scroll from 'components/common/scroll/Scroll'
+import LeftNav from 'components/content/leftNav/LeftNav'
+import GoodsCategory from 'components/content/goodsCategory/GoodsCategory'
 
-import { backTopMixin } from 'common/mixin'
+import { getCategory, getSubcategory } from 'network/category'
 
 export default {
   name: 'Category',
-  mixins: [backTopMixin],
-  mounted() {
-    new BScroll('.wrapper')
-  }
+  components: {
+    NavBar,
+    Scroll,
+    LeftNav,
+    GoodsCategory
+  },
+  data() {
+    return {
+      navList: [],
+      goodsCategory: []
+    }
+  },
+  created() {
+    getCategory().then(res => {
+      // 获取大体分类
+      this.navList.push(...res.data.category.list)
+      // 获取第一条分类的具体分类
+      this.navClick(res.data.category.list[0].maitKey)
+    })
+  },
+  computed: {
+    // gategoryCompName() {
+    //   return this.$store.state.gategoryInfo.compName
+    // }
+  },
+  methods: {
+    navClick(maitKey) {
+      // 切换至具体分类视图
+      // this.$store.dispatch('changeCompName', 'GoodsGategory')
+      // 获取具体分类数据
+      getSubcategory(maitKey).then(res => {
+        this.goodsCategory = []
+        this.goodsCategory.push(...res.data.list)
+      })
+    },
+  },
 }
 </script>
 
 <style scoped>
+#category {
+  height: 100vh;
+  position: relative;
+}
+
+.category-nav {
+  color: #fff;
+  background-color: var(--color-tint);
+}
+
+.left-scroll {
+  width: 25%;
+  position: absolute;
+  left: 0;
+  top: 44px;
+  bottom: 49px;
+  overflow: hidden;
+}
+
+.right-scroll {
+  width: 75%;
+  position: absolute;
+  right: 0;
+  top: 44px;
+  bottom: 49px;
+  overflow: hidden;
+}
+
 .wrapper {
+  width: 70%;
   height: 100vh;
   background-color: #999;
   overflow: hidden;

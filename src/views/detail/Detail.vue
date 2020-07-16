@@ -42,7 +42,7 @@ import {
 import { itemListenerMixin, backTopMixin } from 'common/mixin'
 import { debounce } from 'common/utils'
 
-import { Toast } from 'mint-ui'
+// import { Toast } from 'mint-ui'
 
 export default {
   name: 'Detail',

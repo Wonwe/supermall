@@ -2,22 +2,22 @@
 <template>
   <div class="bottom-bar">
     <div class="bar-item bar-left">
-      <div>
+      <div @click="itemClick">
         <i class="icon service"></i>
         <span class="text">客服</span>
       </div>
-      <div>
+      <div @click="itemClick">
         <i class="icon shop"></i>
         <span class="text">店铺</span>
       </div>
-      <div>
+      <div @click="itemClick">
         <i class="icon select"></i>
         <span class="text">收藏</span>
       </div>
     </div>
     <div class="bar-item bar-right">
       <div class="cart" @click="addToCart">加入购物车</div>
-      <div class="buy">购买</div>
+      <div class="buy" @click="itemClick">购买</div>
     </div>
   </div>
 </template>
@@ -30,6 +30,9 @@ export default {
   methods: {
     addToCart() {
       this.$emit('addToCart')
+    },
+    itemClick() {
+      this.$toast.show('只完成了加入购物车...', 1000)
     }
   }
 }
